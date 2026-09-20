@@ -1,26 +1,309 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Enables the `dark:` variant based on the data-theme attribute on <html> */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ==========================================================
+   NOVA SOLUTIONS - THEME (Tailwind CSS v4)
+   ========================================================== */
+
+@theme {
+  /* Brand palette (fixed, same in both themes) */
+  --color-primary-dark: #231942;
+  --color-deep-purple: #5e548e;
+  --color-muted-purple: #9f86c0;
+  --color-light-purple: #be95c4;
+  --color-soft-lavender: #e0b1cb;
+
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* Fonts + semantic colors that change with the theme */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-roboto), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-brand: var(--font-cormorant), Georgia, serif;
+
+  --color-page: var(--site-bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ==========================================================
+   THEME VARIABLES
+   ========================================================== */
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --site-bg: #edf2f4;
+  --surface: #ffffff;
+  --ink: #231942;
+  --ink-soft: rgb(35 25 66 / 0.72);
+  --line: rgb(94 84 142 / 0.35);
+  --accent: #5e548e;
+
+  --glass-from: rgb(255 255 255 / 0.6);
+  --glass-to: rgb(255 255 255 / 0.22);
+  --glass-border: rgb(255 255 255 / 0.65);
+  --glass-shadow: 0 8px 32px rgb(35 25 66 / 0.12);
+  --glass-highlight: rgb(255 255 255 / 0.75);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --site-bg: #120d24;
+  --surface: #1c1436;
+  --ink: #edf2f4;
+  --ink-soft: rgb(237 242 244 / 0.72);
+  --line: rgb(190 149 196 / 0.3);
+  --accent: #be95c4;
+
+  --glass-from: rgb(94 84 142 / 0.35);
+  --glass-to: rgb(35 25 66 / 0.35);
+  --glass-border: rgb(255 255 255 / 0.14);
+  --glass-shadow: 0 8px 32px rgb(0 0 0 / 0.45);
+  --glass-highlight: rgb(255 255 255 / 0.12);
+}
+
+/* ==========================================================
+   BASE STYLES
+   ========================================================== */
+
+html {
+  font-size: clamp(15px, 0.35vw + 11px, 18px);
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--site-bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  transition: background-color 0.5s var(--ease-smooth),
+    color 0.5s var(--ease-smooth);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+::selection {
+  background-color: var(--color-light-purple);
+  color: var(--color-primary-dark);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--site-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted-purple);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-deep-purple);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================
+   STRICT RULE 1: SQUARE FORMS & IMAGES (zero border-radius)
+   ========================================================== */
+
+form,
+input,
+textarea,
+select,
+option,
+fieldset,
+img,
+picture,
+video,
+canvas,
+.square {
+  border-radius: 0 !important;
+}
+
+/* ==========================================================
+   STRICT RULE 2: FLAT FORMS (no hover lift / elevation)
+   ========================================================== */
+
+form,
+form:hover,
+form:focus-within,
+input,
+input:hover,
+input:focus,
+textarea,
+textarea:hover,
+textarea:focus,
+select,
+select:hover,
+select:focus,
+fieldset,
+fieldset:hover {
+  transform: none !important;
+  translate: none !important;
+  scale: none !important;
+  rotate: none !important;
+  box-shadow: none !important;
+}
+
+/* ==========================================================
+   REUSABLE FORM FIELD (flat, square, border-color change only)
+   ========================================================== */
+
+.field {
+  display: block;
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background-color: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  transition: border-color 0.25s var(--ease-smooth),
+    background-color 0.5s var(--ease-smooth);
+}
+
+.field::placeholder {
+  color: var(--ink-soft);
+  opacity: 0.6;
+}
+
+.field:hover {
+  border-color: var(--color-muted-purple);
+}
+
+.field:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* ==========================================================
+   LIQUID GLASS (theme-aware)
+   ========================================================== */
+
+.glass {
+  background: linear-gradient(135deg, var(--glass-from), var(--glass-to));
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+}
+
+/* ==========================================================
+   HERO SLIDER PROGRESS BAR
+   ========================================================== */
+
+@keyframes hero-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.hero-progress {
+  transform-origin: left center;
+  animation-name: hero-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 10%,
+    #000 90%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 10%,
+    #000 90%,
+    transparent
+  );
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 45s linear infinite;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes wordmark-flow {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 100% 50%;
+  }
+}
+
+/* Big gradient brand name that slowly flows and fades out at the bottom */
+.wordmark {
+  background-image: linear-gradient(
+    90deg,
+    #9f86c0,
+    #e0b1cb,
+    #be95c4,
+    #5e548e,
+    #9f86c0
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: wordmark-flow 14s ease-in-out infinite alternate;
+  -webkit-mask-image: linear-gradient(to bottom, #000 22%, transparent 92%);
+  mask-image: linear-gradient(to bottom, #000 22%, transparent 92%);
 }
