@@ -55,6 +55,7 @@ export const privacyContent = {
         "Google Firebase (Firestore and Authentication): stores contact messages, site settings and administrator accounts.",
         "Cloudinary: stores and delivers project images shown on the website.",
         "Our website hosting provider: serves the website and may keep standard server logs.",
+        "Google reCAPTCHA and Firebase App Check: help us tell real visitors from automated bots. Google may process technical data such as your IP address for this purpose, under Google's own privacy policy.",
       ],
       after: [
         "Some of these providers process data on servers outside Sri Lanka. Links on our website to social media or other sites lead to services with their own privacy policies, which we do not control.",

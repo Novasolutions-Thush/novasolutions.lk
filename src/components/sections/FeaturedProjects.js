@@ -57,7 +57,7 @@ export default function FeaturedProjects() {
           {!loading &&
             list.map((project, i) => (
               <Reveal key={project.id} delay={(i % 3) * 0.08}>
-                <Link href="/projects" className="group block">
+                <Link href={`/projects/${project.id}`} className="group block">
                   <div className="relative aspect-[4/3] w-full overflow-hidden bg-primary-dark">
                     {project.image && (
                       <Image

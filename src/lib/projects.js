@@ -46,6 +46,17 @@ export async function deleteProject(id) {
   await deleteDoc(doc(db, "projects", id));
 }
 
+// The detailed fields of a sample project (Firestore never accepts undefined)
+const detailFields = (p) => ({
+  longDescription: p.longDescription || "",
+  gallery: p.gallery || [],
+  features: p.features || [],
+  clients: p.clients || [],
+  demoUrl: p.demoUrl || "",
+  year: p.year || "",
+  duration: p.duration || "",
+});
+
 // One-time helper: copies the sample projects from the static data file
 export async function seedProjects(list) {
   const batch = writeBatch(db);
@@ -60,11 +71,32 @@ export async function seedProjects(list) {
       image: p.image,
       imagePublicId: "",
       featured: i < 3,
-      // Keeps the original order (first item = newest)
+      ...detailFields(p),
       createdAt: Timestamp.fromMillis(base - i * 1000),
       updatedAt: serverTimestamp(),
     });
   });
 
   await batch.commit();
+}
+
+// For sample projects imported BEFORE this step: adds the new detail fields
+// (matched by title). Images and everything else stay untouched.
+export async function syncSampleDetails(existing, samples) {
+  const batch = writeBatch(db);
+  let count = 0;
+
+  existing.forEach((p) => {
+    if (p.longDescription) return;
+    const sample = samples.find((s) => s.title === p.title);
+    if (!sample) return;
+    batch.update(doc(db, "projects", p.id), {
+      ...detailFields(sample),
+      updatedAt: serverTimestamp(),
+    });
+    count += 1;
+  });
+
+  if (count) await batch.commit();
+  return count;
 }

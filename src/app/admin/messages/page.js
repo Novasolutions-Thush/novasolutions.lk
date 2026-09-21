@@ -14,6 +14,7 @@ import {
   Reply,
   Tag,
   Trash2,
+  FolderKanban,
 } from "lucide-react";
 import ConfirmDialog from "@/components/admin/ConfirmDialog";
 import { useMessages } from "@/hooks/useMessages";
@@ -22,6 +23,7 @@ import {
   formatMessageDate,
   setMessageRead,
 } from "@/lib/messages";
+import Link from "next/link";
 
 export default function AdminMessagesPage() {
   const { messages, loading, error } = useMessages();
@@ -229,6 +231,19 @@ export default function AdminMessagesPage() {
                   {formatMessageDate(selected.createdAt)}
                 </li>
               </ul>
+              
+              {selected.projectId && (
+                <li className="flex items-center gap-3 text-ink-soft">
+                  <FolderKanban size={16} className="shrink-0 text-accent" />
+                  <Link
+                    href={`/projects/${selected.projectId}`}
+                    target="_blank"
+                    className="transition-colors duration-300 hover:text-accent"
+                  >
+                    Project: {selected.projectTitle}
+                  </Link>
+                </li>
+              )}
 
               <div className="mt-6 whitespace-pre-wrap break-words border-t border-line pt-6 leading-relaxed">
                 {selected.message}

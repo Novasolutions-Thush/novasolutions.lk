@@ -4,7 +4,7 @@ import ProjectForm from "@/components/admin/ProjectForm";
 
 export default function NewProjectPage() {
   return (
-    <div className="mx-auto max-w-3xl">
+    <div className="mx-auto max-w-4xl">
       <Link
         href="/admin/projects"
         className="inline-flex items-center gap-2 text-sm font-medium text-accent transition-opacity duration-300 hover:opacity-70"

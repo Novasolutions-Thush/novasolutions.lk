@@ -5,16 +5,20 @@ import {
   ArrowUp,
   Clock,
   FileText,
+  LayoutDashboard,
   Lock,
+  LogIn,
   Mail,
   MapPin,
   Phone,
   ShieldCheck,
 } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 import { useSettings } from "@/context/SettingsContext";
 import { telHref } from "@/data/siteDefaults";
 import { services } from "@/data/services";
 import { legalLinks } from "@/data/legalLinks";
+import { exploreItems, exploreLabel } from "@/data/exploreMenu";
 import SocialLinks from "@/components/ui/SocialLinks";
 import LogoMark from "@/components/ui/LogoMark";
 
@@ -31,6 +35,9 @@ const legalIcons = {
   "/terms": FileText,
   "/security": ShieldCheck,
 };
+
+const pill =
+  "inline-flex items-center gap-2 border border-white/15 px-3.5 py-2 font-medium text-white/75 transition-colors duration-300 hover:border-light-purple hover:bg-light-purple hover:text-primary-dark";
 
 function FooterLink({ href, children }) {
   return (
@@ -79,7 +86,11 @@ function Ribbon() {
 
 export default function Footer() {
   const { settings } = useSettings();
+  const { isAdmin } = useAuth();
+
   const company = settings.legalName || "Nova Solutions";
+  const AdminIcon = isAdmin ? LayoutDashboard : LogIn;
+  const year = new Date().getFullYear();
 
   const contactItems = [
     { icon: Mail, value: settings.email, href: settings.email ? `mailto:${settings.email}` : "" },
@@ -110,17 +121,17 @@ export default function Footer() {
       </div>
 
       {/* Main columns */}
-      <div className="relative mx-auto grid max-w-7xl gap-12 px-6 pb-12 pt-16 sm:px-8 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1.3fr]">
+      <div className="relative mx-auto grid max-w-7xl gap-12 px-6 pb-12 pt-16 sm:px-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[1.5fr_1fr_1fr_1fr_1.3fr]">
         {/* Brand */}
-        <div>
+        <div className="md:col-span-2 lg:col-span-3 xl:col-span-1">
           <div className="flex items-center gap-3">
-            <LogoMark size={44} className="ring-1 ring-white/25" />
+            <LogoMark size={52} />
             <p className="font-brand text-4xl font-bold text-soft-lavender">
               Nova Solutions
             </p>
           </div>
           {settings.tagline && (
-            <p className="mt-2 font-brand text-lg italic text-light-purple">
+            <p className="mt-3 font-brand text-lg italic text-light-purple">
               {settings.tagline}
             </p>
           )}
@@ -131,7 +142,7 @@ export default function Footer() {
           <SocialLinks socials={settings.socials} variant="dark" className="mt-7" />
 
           <p className="mt-6 text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-white/50">
-            {company} &bull; {new Date().getFullYear()}
+            {company} &bull; {year}
           </p>
         </div>
 
@@ -142,6 +153,18 @@ export default function Footer() {
             {quickLinks.map((link) => (
               <li key={link.href}>
                 <FooterLink href={link.href}>{link.label}</FooterLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Explore */}
+        <div>
+          <Heading>{exploreLabel}</Heading>
+          <ul className="mt-5 space-y-3">
+            {exploreItems.map((item) => (
+              <li key={item.slug}>
+                <FooterLink href={item.href}>{item.label}</FooterLink>
               </li>
             ))}
           </ul>
@@ -192,18 +215,18 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Giant wordmark (gradient, flowing, fades out at the bottom) */}
-      <div className="relative select-none overflow-hidden px-2 pt-4" aria-hidden="true">
-        <p className="wordmark whitespace-nowrap text-center font-brand text-[clamp(3rem,14.5vw,18rem)] font-bold leading-[0.85] tracking-tight">
+      {/* Giant wordmark (Gradient, large serif style, full-width across bottom like Image 1) */}
+      <div className="relative select-none overflow-hidden px-4 pt-10 pb-4 text-center" aria-hidden="true">
+        <p className="font-serif text-[11vw] font-bold leading-none tracking-normal text-transparent bg-clip-text bg-gradient-to-b from-soft-lavender/40 via-soft-lavender/20 to-transparent">
           Nova Solutions
         </p>
       </div>
 
       {/* Bottom bar */}
       <div className="relative border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl flex-col items-center gap-5 px-6 py-6 text-xs text-white/50 sm:px-8 lg:flex-row lg:justify-between">
+        <div className="mx-auto flex max-w-7xl flex-col items-center gap-5 px-6 py-6 text-xs text-white/50 sm:px-8 lg:flex-row lg:flex-wrap lg:justify-between">
           <p className="text-center lg:text-left">
-            &copy; {new Date().getFullYear()} {company}. All rights reserved.
+            &copy; {year} {company}. All rights reserved.
           </p>
 
           <nav
@@ -213,16 +236,17 @@ export default function Footer() {
             {legalLinks.map((link) => {
               const Icon = legalIcons[link.href];
               return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="inline-flex items-center gap-2 border border-white/15 px-3.5 py-2 font-medium text-white/75 transition-colors duration-300 hover:border-light-purple hover:bg-light-purple hover:text-primary-dark"
-                >
+                <Link key={link.href} href={link.href} className={pill}>
                   {Icon && <Icon size={13} />}
                   {link.label}
                 </Link>
               );
             })}
+
+            <Link href={isAdmin ? "/admin" : "/login"} className={pill}>
+              <AdminIcon size={13} />
+              {isAdmin ? "Dashboard" : "Admin Login"}
+            </Link>
           </nav>
 
           <button

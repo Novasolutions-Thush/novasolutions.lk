@@ -1,4 +1,9 @@
-import { Roboto, Plus_Jakarta_Sans, Cormorant_Garamond } from "next/font/google";
+import {
+  Roboto,
+  Plus_Jakarta_Sans,
+  Cormorant_Garamond,
+  Cinzel,
+} from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { AuthProvider } from "@/context/AuthContext";
@@ -24,6 +29,13 @@ const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["500", "600", "700"],
   variable: "--font-cormorant",
+  display: "swap",
+});
+
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-cinzel",
   display: "swap",
 });
 
@@ -139,7 +151,7 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${roboto.variable} ${jakarta.variable} ${cormorant.variable}`}
+      className={`${roboto.variable} ${jakarta.variable} ${cormorant.variable} ${cinzel.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />

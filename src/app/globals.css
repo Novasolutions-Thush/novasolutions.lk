@@ -23,6 +23,7 @@
   --font-sans: var(--font-roboto), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-brand: var(--font-cormorant), Georgia, serif;
+  --font-logo: var(--font-cinzel), Georgia, serif;
 
   --color-page: var(--site-bg);
   --color-surface: var(--surface);
@@ -45,6 +46,7 @@
   --ink-soft: rgb(35 25 66 / 0.72);
   --line: rgb(94 84 142 / 0.35);
   --accent: #5e548e;
+  --nav-h: 4.75rem;
 
   --glass-from: rgb(255 255 255 / 0.6);
   --glass-to: rgb(255 255 255 / 0.22);
@@ -61,6 +63,7 @@
   --ink-soft: rgb(237 242 244 / 0.72);
   --line: rgb(190 149 196 / 0.3);
   --accent: #be95c4;
+  --nav-h: 4.75rem;
 
   --glass-from: rgb(94 84 142 / 0.35);
   --glass-to: rgb(35 25 66 / 0.35);

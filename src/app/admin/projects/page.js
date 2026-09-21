@@ -16,9 +16,10 @@ import {
 } from "lucide-react";
 import ConfirmDialog from "@/components/admin/ConfirmDialog";
 import { useProjects } from "@/hooks/useProjects";
-import { deleteProject, seedProjects } from "@/lib/projects";
+import { deleteProject, seedProjects, syncSampleDetails } from "@/lib/projects";
 import { deleteProjectImage } from "@/lib/upload";
 import { projects as sampleProjects } from "@/data/projects";
+import { ExternalLink, Sparkles } from "lucide-react";
 
 export default function AdminProjectsPage() {
   const { projects, loading, error, reload } = useProjects();
@@ -26,6 +27,7 @@ export default function AdminProjectsPage() {
   const [busy, setBusy] = useState(false);
   const [seeding, setSeeding] = useState(false);
   const [message, setMessage] = useState("");
+  const [syncing, setSyncing] = useState(false);
 
   const confirmDelete = async () => {
     if (!target) return;
@@ -56,19 +58,49 @@ export default function AdminProjectsPage() {
     }
   };
 
+  const needsSync = projects.some(
+    (p) => !p.longDescription && sampleProjects.some((s) => s.title === p.title)
+  );
+
+  const onSync = async () => {
+    setSyncing(true);
+    setMessage("");
+    try {
+      await syncSampleDetails(projects, sampleProjects);
+      reload();
+    } catch {
+      setMessage("Could not add the sample details. Check your Firestore rules.");
+    } finally {
+      setSyncing(false);
+    }
+  };
+
   return (
     <div className="mx-auto max-w-6xl">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <p className="text-sm text-ink-soft">
           {loading ? "Loading..." : `${projects.length} project${projects.length === 1 ? "" : "s"}`}
         </p>
-        <Link
-          href="/admin/projects/new"
-          className="inline-flex items-center gap-2 bg-primary-dark px-6 py-3 text-sm font-semibold text-white transition-colors duration-300 hover:bg-deep-purple dark:bg-light-purple dark:text-primary-dark dark:hover:bg-soft-lavender"
-        >
-          <Plus size={18} />
-          Add Project
-        </Link>
+        <div className="flex flex-wrap items-center gap-3">
+          {needsSync && (
+            <button
+              type="button"
+              onClick={onSync}
+              disabled={syncing}
+              className="inline-flex items-center gap-2 border border-accent px-5 py-3 text-sm font-medium text-accent transition-colors duration-300 hover:bg-accent hover:text-white disabled:opacity-60 dark:hover:text-primary-dark"
+            >
+              {syncing ? <Loader2 size={17} className="animate-spin" /> : <Sparkles size={17} />}
+              Add sample details
+            </button>
+          )}
+          <Link
+            href="/admin/projects/new"
+            className="inline-flex items-center gap-2 bg-primary-dark px-6 py-3 text-sm font-semibold text-white transition-colors duration-300 hover:bg-deep-purple dark:bg-light-purple dark:text-primary-dark dark:hover:bg-soft-lavender"
+          >
+            <Plus size={18} />
+            Add Project
+          </Link>
+        </div>
       </div>
 
       {message && (
@@ -184,6 +216,14 @@ export default function AdminProjectsPage() {
                 </div>
 
                 <div className="flex shrink-0 gap-2">
+                  <Link
+                    href={`/projects/${p.id}`}
+                    target="_blank"
+                    className="inline-flex items-center gap-2 border border-line px-4 py-2 text-sm font-medium transition-colors duration-300 hover:border-accent hover:text-accent"
+                  >
+                    <ExternalLink size={15} />
+                    View
+                  </Link>
                   <Link
                     href={`/admin/projects/${p.id}`}
                     className="inline-flex items-center gap-2 border border-line px-4 py-2 text-sm font-medium transition-colors duration-300 hover:border-accent hover:text-accent"
