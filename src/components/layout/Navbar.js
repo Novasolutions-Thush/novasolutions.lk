@@ -29,20 +29,19 @@ const links = [
 
 const EASE = [0.22, 1, 0.36, 1];
 
-// 1. Logo size එක 50% කින් වැඩි කරන ලදී (52 -> 78)
-function Brand({ onClick, size = 60 }) {
+function Brand({ onClick, size = 52 }) {
   return (
     <Link
       href="/"
       onClick={onClick}
       aria-label="Nova Solutions home"
-      className="group flex items-center gap-4"
+      className="group flex shrink-0 items-center gap-3"
     >
       <LogoMark
         size={size}
-        className="transition-transform duration-500 ease-smooth group-hover:scale-105"
+        className="shrink-0 transition-transform duration-500 ease-smooth group-hover:scale-105"
       />
-      <span className="font-logo text-[1.85rem] font-bold uppercase leading-none tracking-[0.14em] text-ink sm:text-[2.05rem]">
+      <span className="whitespace-nowrap font-logo text-[1.15rem] font-bold uppercase leading-none tracking-[0.08em] text-ink sm:text-[1.3rem] lg:text-[1.45rem]">
         Nova Solutions
       </span>
     </Link>
@@ -92,23 +91,21 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 border-b border-line bg-page transition-all duration-500 ${
+        className={`fixed inset-x-0 top-0 z-50 border-b border-line bg-page transition-shadow duration-500 ${
           scrolled ? "shadow-[0_6px_24px_rgb(35_25_66/0.14)]" : ""
         }`}
       >
         <nav
           aria-label="Main"
-          className={`relative mx-auto flex w-full items-center justify-between gap-4 px-4 transition-[padding] duration-500 ease-smooth sm:px-8 xl:px-12 ${
-            scrolled ? "py-4" : "py-6"
+          className={`relative mx-auto flex w-full max-w-[1600px] items-center justify-between gap-6 px-5 transition-[padding] duration-500 ease-smooth sm:px-8 xl:px-12 ${
+            scrolled ? "py-3" : "py-5"
           }`}
         >
-          {/* Left Side: Brand (Logo එක scroll පරිදි 66 / 78 ලෙස 50% කින් ලොකු කර ඇත) */}
-          <div className="pl-0 sm:pl-12 md:pl-20 xl:pl-28 transition-all duration-500">
-            <Brand size={scrolled ? 66 : 78} />
-          </div>
+          {/* Left: Brand */}
+          <Brand size={scrolled ? 44 : 52} />
 
-          {/* Desktop links */}
-          <ul className="hidden items-center xl:flex">
+          {/* Center: Desktop links (Explore sits before Contact) */}
+          <ul className="hidden items-center xl:mx-auto xl:flex">
             {links.map((link) => {
               const active = isActive(link.href);
               return (
@@ -117,7 +114,7 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     aria-current={active ? "page" : undefined}
-                    className={`group relative block px-4 py-2.5 text-base font-medium transition-colors duration-300 ${
+                    className={`group relative block whitespace-nowrap px-4 py-2.5 text-sm font-medium transition-colors duration-300 ${
                       active ? "text-ink" : "text-ink-soft hover:text-ink"
                     }`}
                   >
@@ -140,13 +137,13 @@ export default function Navbar() {
             })}
           </ul>
 
-          {/* Right Side: Quote Button & Controls */}
-          <div className="flex items-center gap-3 pr-0 sm:pr-12 md:pr-20 xl:pr-28 transition-all duration-500">
+          {/* Right: Controls */}
+          <div className="flex shrink-0 items-center gap-2.5">
             <ThemeToggle />
 
             <Link
               href="/contact"
-              className="group hidden items-center gap-2 bg-primary-dark px-6 py-3 text-sm font-semibold text-white transition-colors duration-300 hover:bg-deep-purple sm:inline-flex dark:bg-light-purple dark:text-primary-dark dark:hover:bg-soft-lavender"
+              className="group hidden items-center gap-2 whitespace-nowrap bg-primary-dark px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-300 hover:bg-deep-purple sm:inline-flex dark:bg-light-purple dark:text-primary-dark dark:hover:bg-soft-lavender"
             >
               Get a Quote
               <ArrowRight
@@ -160,9 +157,9 @@ export default function Navbar() {
               onClick={() => setOpen(true)}
               aria-label="Open menu"
               aria-expanded={open}
-              className="grid h-11 w-11 place-items-center border border-line text-ink transition-colors duration-300 hover:border-accent hover:text-accent xl:hidden"
+              className="grid h-10 w-10 shrink-0 place-items-center border border-line text-ink transition-colors duration-300 hover:border-accent hover:text-accent xl:hidden"
             >
-              <Menu size={22} />
+              <Menu size={20} />
             </button>
           </div>
 
@@ -202,7 +199,7 @@ export default function Navbar() {
               className="fixed inset-y-0 right-0 z-[70] flex w-[88vw] max-w-sm flex-col border-l border-line bg-surface xl:hidden"
             >
               <div className="flex items-center justify-between border-b border-line px-5 py-4">
-                <Brand size={50} onClick={() => setOpen(false)} />
+                <Brand size={40} onClick={() => setOpen(false)} />
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
@@ -300,7 +297,7 @@ export default function Navbar() {
                 <ul className="space-y-2 text-sm text-ink-soft">
                   {settings.email && (
                     <li>
-                      <a
+                      
                         href={`mailto:${settings.email}`}
                         className="flex items-center gap-3 transition-colors duration-300 hover:text-accent"
                       >
@@ -311,7 +308,7 @@ export default function Navbar() {
                   )}
                   {settings.phone && (
                     <li>
-                      <a
+                      
                         href={telHref(settings.phone)}
                         className="flex items-center gap-3 transition-colors duration-300 hover:text-accent"
                       >
