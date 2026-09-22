@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function LoginPage() {
   return (
-    <main className="relative isolate overflow-hidden px-5 pb-16 pt-32 sm:px-8 sm:pt-40">
+    <main className="relative isolate overflow-hidden px-5 pb-16 pt-36 sm:px-8 sm:pt-44">
       {/* Background accents */}
       <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
         <div className="absolute -left-20 top-10 h-72 w-72 rounded-full bg-light-purple/35 blur-3xl" />
