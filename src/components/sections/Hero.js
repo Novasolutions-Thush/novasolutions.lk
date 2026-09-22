@@ -63,7 +63,7 @@ export default function Hero() {
 
   return (
     <section
-      className="relative isolate overflow-hidden pb-12 pt-28 sm:pt-32"
+      className="relative isolate overflow-hidden pb-12 pt-36 sm:pt-40"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       aria-roledescription="carousel"
