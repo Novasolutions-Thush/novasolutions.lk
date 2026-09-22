@@ -30,7 +30,7 @@ const links = [
 const EASE = [0.22, 1, 0.36, 1];
 
 // 1. Logo size එක 50% කින් වැඩි කරන ලදී (52 -> 78)
-function Brand({ onClick, size = 78 }) {
+function Brand({ onClick, size = 60 }) {
   return (
     <Link
       href="/"
@@ -42,7 +42,7 @@ function Brand({ onClick, size = 78 }) {
         size={size}
         className="transition-transform duration-500 ease-smooth group-hover:scale-105"
       />
-      <span className="font-logo text-[1.85rem] font-bold uppercase leading-none tracking-[0.14em] text-ink sm:text-[2.25rem]">
+      <span className="font-logo text-[1.85rem] font-bold uppercase leading-none tracking-[0.14em] text-ink sm:text-[2.05rem]">
         Nova Solutions
       </span>
     </Link>
@@ -99,7 +99,7 @@ export default function Navbar() {
         <nav
           aria-label="Main"
           className={`relative mx-auto flex w-full items-center justify-between gap-4 px-4 transition-[padding] duration-500 ease-smooth sm:px-8 xl:px-12 ${
-            scrolled ? "py-5" : "py-8"
+            scrolled ? "py-4" : "py-6"
           }`}
         >
           {/* Left Side: Brand (Logo එක scroll පරිදි 66 / 78 ලෙස 50% කින් ලොකු කර ඇත) */}
@@ -202,7 +202,7 @@ export default function Navbar() {
               className="fixed inset-y-0 right-0 z-[70] flex w-[88vw] max-w-sm flex-col border-l border-line bg-surface xl:hidden"
             >
               <div className="flex items-center justify-between border-b border-line px-5 py-4">
-                <Brand size={54} onClick={() => setOpen(false)} />
+                <Brand size={50} onClick={() => setOpen(false)} />
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
