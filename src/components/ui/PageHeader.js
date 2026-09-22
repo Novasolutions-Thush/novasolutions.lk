@@ -4,7 +4,7 @@ import Reveal from "@/components/ui/Reveal";
 
 export default function PageHeader({ eyebrow, title, description }) {
   return (
-    <section className="relative isolate overflow-hidden pb-14 pt-36 sm:pb-20 sm:pt-44">
+    <section className="relative isolate overflow-hidden pb-14 pt-40 sm:pb-20 sm:pt-48">
       {/* Background accents */}
       <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
         <div
