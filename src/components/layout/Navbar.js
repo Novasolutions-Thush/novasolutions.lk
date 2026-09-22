@@ -30,7 +30,7 @@ const links = [
 const EASE = [0.22, 1, 0.36, 1];
 
 // 1. Logo size එක 50% කින් වැඩි කරන ලදී (52 -> 78)
-function Brand({ onClick, size = 60 }) {
+function Brand({ onClick, size = 52 }) {
   return (
     <Link
       href="/"
@@ -42,7 +42,7 @@ function Brand({ onClick, size = 60 }) {
         size={size}
         className="transition-transform duration-500 ease-smooth group-hover:scale-105"
       />
-      <span className="font-logo text-[1.85rem] font-bold uppercase leading-none tracking-[0.14em] text-ink sm:text-[2.05rem]">
+      <span className="whitespace-nowrap font-logo text-[1.25rem] font-bold uppercase leading-none tracking-[0.1em] text-ink sm:text-[1.45rem]">
         Nova Solutions
       </span>
     </Link>
@@ -103,8 +103,8 @@ export default function Navbar() {
           }`}
         >
           {/* Left Side: Brand (Logo එක scroll පරිදි 66 / 78 ලෙස 50% කින් ලොකු කර ඇත) */}
-          <div className="pl-0 sm:pl-12 md:pl-20 xl:pl-28 transition-all duration-500">
-            <Brand size={scrolled ? 66 : 78} />
+          <div className="pl-0 sm:pl-8 md:pl-14 xl:pl-20 transition-all duration-500">
+            <Brand size={scrolled ? 46 : 52} />
           </div>
 
           {/* Desktop links */}
@@ -141,7 +141,7 @@ export default function Navbar() {
           </ul>
 
           {/* Right Side: Quote Button & Controls */}
-          <div className="flex items-center gap-3 pr-0 sm:pr-12 md:pr-20 xl:pr-28 transition-all duration-500">
+          <div className="flex items-center gap-3 pr-0 sm:pr-8 md:pr-14 xl:pr-20 transition-all duration-500">
             <ThemeToggle />
 
             <Link
@@ -202,7 +202,7 @@ export default function Navbar() {
               className="fixed inset-y-0 right-0 z-[70] flex w-[88vw] max-w-sm flex-col border-l border-line bg-surface xl:hidden"
             >
               <div className="flex items-center justify-between border-b border-line px-5 py-4">
-                <Brand size={50} onClick={() => setOpen(false)} />
+                <Brand size={44} onClick={() => setOpen(false)} />
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
