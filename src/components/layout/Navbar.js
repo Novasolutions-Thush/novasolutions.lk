@@ -51,7 +51,6 @@ function Brand({ onClick, size = 52 }) {
 export default function Navbar() {
   const pathname = usePathname();
   const { settings } = useSettings();
-
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -71,10 +70,12 @@ export default function Navbar() {
   }, [pathname]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) return undefined;
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    const onKey = (e) => e.key === "Escape" && setOpen(false);
+    const onKey = (e) => {
+      if (e.key === "Escape") setOpen(false);
+    };
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = previous;
@@ -82,21 +83,25 @@ export default function Navbar() {
     };
   }, [open]);
 
-  const isActive = (href) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const isActive = (href) => {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
+  };
 
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 border-b border-line bg-page transition-shadow duration-500 ${
-          scrolled ? "shadow-[0_6px_24px_rgb(35_25_66/0.14)]" : ""
-        }`}
+        className={
+          "fixed inset-x-0 top-0 z-50 border-b border-line bg-page transition-shadow duration-500 " +
+          (scrolled ? "shadow-[0_6px_24px_rgb(35_25_66/0.14)]" : "")
+        }
       >
         <nav
           aria-label="Main"
-          className={`relative mx-auto flex w-full max-w-[1600px] items-center justify-between gap-6 px-5 transition-[padding] duration-500 ease-smooth sm:px-8 xl:px-12 ${
-            scrolled ? "py-3" : "py-5"
-          }`}
+          className={
+            "relative mx-auto flex w-full max-w-[1600px] items-center justify-between gap-6 px-5 transition-[padding] duration-500 ease-smooth sm:px-8 xl:px-12 " +
+            (scrolled ? "py-3" : "py-5")
+          }
         >
           <Brand size={scrolled ? 44 : 52} />
 
@@ -105,25 +110,24 @@ export default function Navbar() {
               const active = isActive(link.href);
               return (
                 <li key={link.href} className="flex items-center">
-                  {link.href === "/contact" && <ExploreMenu />}
+                  {link.href === "/contact" ? <ExploreMenu /> : null}
                   <Link
                     href={link.href}
                     aria-current={active ? "page" : undefined}
-                    className={`group relative block whitespace-nowrap px-4 py-2.5 text-sm font-medium transition-colors duration-300 ${
-                      active ? "text-ink" : "text-ink-soft hover:text-ink"
-                    }`}
+                    className={
+                      "group relative block whitespace-nowrap px-4 py-2.5 text-sm font-medium transition-colors duration-300 " +
+                      (active ? "text-ink" : "text-ink-soft hover:text-ink")
+                    }
                   >
                     {link.label}
 
-                    {active && (
+                    {active ? (
                       <motion.span
                         layoutId="nav-underline"
                         className="absolute inset-x-4 bottom-0.5 h-[2px] bg-accent"
                         transition={{ type: "spring", stiffness: 380, damping: 32 }}
                       />
-                    )}
-
-                    {!active && (
+                    ) : (
                       <span className="absolute inset-x-4 bottom-0.5 h-[2px] origin-left scale-x-0 bg-accent/60 transition-transform duration-300 ease-smooth group-hover:scale-x-100" />
                     )}
                   </Link>
@@ -166,7 +170,7 @@ export default function Navbar() {
       </header>
 
       <AnimatePresence>
-        {open && (
+        {open ? (
           <>
             <motion.div
               key="overlay"
@@ -218,9 +222,10 @@ export default function Navbar() {
                           href={link.href}
                           onClick={() => setOpen(false)}
                           aria-current={active ? "page" : undefined}
-                          className={`group flex items-center gap-4 py-4 transition-colors duration-300 ${
-                            active ? "text-accent" : "text-ink hover:text-accent"
-                          }`}
+                          className={
+                            "group flex items-center gap-4 py-4 transition-colors duration-300 " +
+                            (active ? "text-accent" : "text-ink hover:text-accent")
+                          }
                         >
                           <span className="font-heading text-xs font-extrabold text-accent/60">
                             {String(i + 1).padStart(2, "0")}
@@ -252,19 +257,20 @@ export default function Navbar() {
                             href={item.href}
                             onClick={() => setOpen(false)}
                             aria-current={current ? "page" : undefined}
-                            className={`flex items-center gap-3 border px-3 py-3 transition-colors duration-300 ${
-                              current
+                            className={
+                              "flex items-center gap-3 border px-3 py-3 transition-colors duration-300 " +
+                              (current
                                 ? "border-accent text-accent"
-                                : "border-line text-ink hover:border-accent hover:text-accent"
-                            }`}
+                                : "border-line text-ink hover:border-accent hover:text-accent")
+                            }
                           >
                             <Icon size={18} className="shrink-0 text-accent" />
                             <span className="flex-1 text-sm font-medium">{item.label}</span>
-                            {!item.live && (
+                            {!item.live ? (
                               <span className="border border-accent/50 px-1.5 py-px text-[0.6rem] font-semibold uppercase tracking-wider text-accent">
                                 Soon
                               </span>
-                            )}
+                            ) : null}
                           </Link>
                         </li>
                       );
@@ -287,18 +293,18 @@ export default function Navbar() {
                 </Link>
 
                 <ul className="space-y-2 text-sm text-ink-soft">
-                  {settings.email && (
+                  {settings.email ? (
                     <li>
                       
-                        href={`mailto:${settings.email}`}
+                        href={"mailto:" + settings.email}
                         className="flex items-center gap-3 transition-colors duration-300 hover:text-accent"
                       >
                         <Mail size={16} className="shrink-0 text-accent" />
                         <span className="break-all">{settings.email}</span>
                       </a>
                     </li>
-                  )}
-                  {settings.phone && (
+                  ) : null}
+                  {settings.phone ? (
                     <li>
                       
                         href={telHref(settings.phone)}
@@ -308,14 +314,14 @@ export default function Navbar() {
                         {settings.phone}
                       </a>
                     </li>
-                  )}
+                  ) : null}
                 </ul>
 
                 <SocialLinks socials={settings.socials} variant="theme" />
               </div>
             </motion.aside>
           </>
-        )}
+        ) : null}
       </AnimatePresence>
     </>
   );
