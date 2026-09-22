@@ -55,7 +55,6 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Scroll progress line
   const { scrollY, scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, {
     stiffness: 140,
@@ -67,12 +66,10 @@ export default function Navbar() {
     setScrolled(latest > 10);
   });
 
-  // Close the mobile panel when the page changes
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
 
-  // Lock page scroll and allow Escape while the panel is open
   useEffect(() => {
     if (!open) return;
     const previous = document.body.style.overflow;
@@ -101,10 +98,8 @@ export default function Navbar() {
             scrolled ? "py-3" : "py-5"
           }`}
         >
-          {/* Left: Brand */}
           <Brand size={scrolled ? 44 : 52} />
 
-          {/* Center: Desktop links (Explore sits before Contact) */}
           <ul className="hidden items-center xl:mx-auto xl:flex">
             {links.map((link) => {
               const active = isActive(link.href);
@@ -137,7 +132,6 @@ export default function Navbar() {
             })}
           </ul>
 
-          {/* Right: Controls */}
           <div className="flex shrink-0 items-center gap-2.5">
             <ThemeToggle />
 
@@ -163,7 +157,6 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Scroll progress line */}
           <motion.span
             style={{ scaleX: progress }}
             className="absolute inset-x-0 -bottom-px h-[2px] origin-left bg-gradient-to-r from-deep-purple via-muted-purple to-light-purple"
@@ -172,7 +165,6 @@ export default function Navbar() {
         </nav>
       </header>
 
-      {/* Mobile panel */}
       <AnimatePresence>
         {open && (
           <>
